@@ -1,1 +1,2211 @@
-helloooooo
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seif Dessoky | Automation Engineer & Robotics Enthusiast</title>
+  
+  <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            cyber: {
+              black: '#07090e',
+              slate: '#0b0f19',
+              dark: '#111726',
+              cyan: '#00f2fe',
+              blue: '#4facfe',
+              amber: '#ff9900',
+              emerald: '#10b981',
+              neon: '#38bdf8'
+            }
+          },
+          boxShadow: {
+            'cyan-glow': '0 0 25px rgba(0, 242, 254, 0.35)',
+            'amber-glow': '0 0 25px rgba(255, 153, 0, 0.35)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Cyber-Mechatronics Blueprint Grid Styling */
+    body {
+      background-color: #07090e;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    .bg-blueprint {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+
+    .bg-blueprint-dense {
+      background-size: 20px 20px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f2fe;
+    }
+
+    /* Glassmorphism panel styling */
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-panel:hover {
+      border-color: rgba(0, 242, 254, 0.3);
+    }
+
+    /* Tech bracket accents */
+    .tech-border {
+      position: relative;
+    }
+    .tech-border::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid #00f2fe;
+      border-left: 2px solid #00f2fe;
+    }
+    .tech-border::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid #ff9900;
+      border-right: 2px solid #ff9900;
+    }
+
+    /* 3D tilt card styling */
+    .tilt-card {
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    /* Glowing HUD scanning effect */
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(1000%); }
+    }
+    .scanner-line {
+      animation: scanline 8s linear infinite;
+    }
+
+    /* Pulse glow */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .animate-pulse-slow {
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased bg-cyber-black text-slate-200 selection:bg-cyan-500 selection:text-black bg-blueprint">
+
+  <!-- HUD Audio feedback overlay elements -->
+  <div id="audioStatus" class="sr-only" aria-live="polite">Audio Ready</div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="mainHeader">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 border-b border-slate-800/80 bg-cyber-black/80 backdrop-blur-xl px-4 md:px-8 rounded-b-2xl">
+        
+        <!-- Logo / Name Badge -->
+        <a href="#hero" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-lg bg-slate-900 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-mono font-bold text-lg shadow-cyan-glow group-hover:scale-105 transition-transform">
+            SD
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors">SEIF DESSOKY</span>
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            </div>
+            <p class="text-[11px] font-mono text-cyan-400/80 tracking-wider">MECHATRONICS & AUTOMATION</p>
+          </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-medium">
+          <a href="#about" class="text-slate-300 hover:text-cyan-400 transition-colors py-1 flex items-center gap-1.5 font-mono text-xs tracking-wider">
+            <span class="text-cyan-500/60">01.</span>PROFILE
+          </a>
+          <a href="#timeline" class="text-slate-300 hover:text-cyan-400 transition-colors py-1 flex items-center gap-1.5 font-mono text-xs tracking-wider">
+            <span class="text-cyan-500/60">02.</span>EXPERIENCE
+          </a>
+          <a href="#honors" class="text-slate-300 hover:text-cyan-400 transition-colors py-1 flex items-center gap-1.5 font-mono text-xs tracking-wider">
+            <span class="text-cyan-500/60">03.</span>AWARDS
+          </a>
+          <a href="#skills" class="text-slate-300 hover:text-cyan-400 transition-colors py-1 flex items-center gap-1.5 font-mono text-xs tracking-wider">
+            <span class="text-cyan-500/60">04.</span>MATRIX
+          </a>
+          <a href="#lab3d" class="text-slate-300 hover:text-cyan-400 transition-colors py-1 flex items-center gap-1.5 font-mono text-xs tracking-wider text-amber-400">
+            <span class="text-amber-500">★</span>3D LAB
+          </a>
+          <a href="#contact" class="text-slate-300 hover:text-cyan-400 transition-colors py-1 flex items-center gap-1.5 font-mono text-xs tracking-wider">
+            <span class="text-cyan-500/60">05.</span>CONNECT
+          </a>
+        </nav>
+
+        <!-- Right Quick Controls -->
+        <div class="flex items-center gap-3">
+          <!-- SFX Synthesizer Toggle -->
+          <button id="sfxToggleBtn" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900/80 text-xs font-mono text-slate-300 hover:text-cyan-400 hover:border-cyan-500/50 transition-all flex items-center gap-2" title="Toggle Mechatronics Sound Synthesizer">
+            <i class="fa-solid fa-volume-high text-cyan-400" id="sfxIcon"></i>
+            <span class="hidden sm:inline" id="sfxLabel">SFX ON</span>
+          </button>
+
+          <!-- Resume Modal Button -->
+          <button onclick="openResumeModal()" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-semibold text-xs tracking-wider uppercase hover:shadow-cyan-glow hover:brightness-110 transition-all">
+            <i class="fa-solid fa-file-arrow-down"></i>
+            CV Specs
+          </button>
+
+          <!-- Mobile Menu Hamburger -->
+          <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-300 hover:text-cyan-400 border border-slate-800 focus:outline-none">
+            <i class="fa-solid fa-bars-staggered text-lg"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Navigation -->
+    <div id="mobileMenu" class="hidden md:hidden bg-cyber-slate/95 backdrop-blur-2xl border-b border-slate-800 px-6 py-6 transition-all duration-300">
+      <nav class="flex flex-col gap-4 font-mono text-sm">
+        <a href="#about" class="text-slate-300 hover:text-cyan-400 py-2 border-b border-slate-800/50" onclick="toggleMobileMenu()">// 01. PROFILE</a>
+        <a href="#timeline" class="text-slate-300 hover:text-cyan-400 py-2 border-b border-slate-800/50" onclick="toggleMobileMenu()">// 02. EXPERIENCE</a>
+        <a href="#honors" class="text-slate-300 hover:text-cyan-400 py-2 border-b border-slate-800/50" onclick="toggleMobileMenu()">// 03. HONORS & AWARDS</a>
+        <a href="#skills" class="text-slate-300 hover:text-cyan-400 py-2 border-b border-slate-800/50" onclick="toggleMobileMenu()">// 04. SKILLS MATRIX</a>
+        <a href="#lab3d" class="text-amber-400 hover:text-amber-300 py-2 border-b border-slate-800/50" onclick="toggleMobileMenu()">// 05. 3D MECHANISM LAB</a>
+        <a href="#contact" class="text-slate-300 hover:text-cyan-400 py-2" onclick="toggleMobileMenu()">// 06. CONNECT TERMINAL</a>
+        <button onclick="openResumeModal(); toggleMobileMenu();" class="mt-2 w-full py-2.5 rounded-lg bg-cyan-400 text-black font-semibold text-xs uppercase tracking-wider text-center">
+          Inspect CV / Resume
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION WITH INTERACTIVE THREE.JS BACKGROUND/CENTERPIECE -->
+    <section id="hero" class="relative min-h-screen pt-28 pb-16 flex items-center justify-center overflow-hidden">
+      
+      <!-- 3D Canvas Background Container -->
+      <div id="heroCanvasContainer" class="absolute inset-0 z-0 opacity-80 pointer-events-auto">
+        <!-- Three.js will mount here -->
+      </div>
+
+      <!-- Foreground Tech Grid & Vignette Overlay -->
+      <div class="absolute inset-0 z-1 pointer-events-none bg-gradient-to-t from-cyber-black via-transparent to-cyber-black/70"></div>
+      <div class="absolute inset-0 z-1 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-cyber-black/40 to-cyber-black"></div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-8 pb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- Hero Left Column: Bio & Core Pitch -->
+          <div class="lg:col-span-7 space-y-6">
+            
+            <!-- Terminal Telemetry Badge -->
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/30 text-cyan-400 font-mono text-xs tracking-wider backdrop-blur-md">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              ROAR ASU RACING TEAM (ROVER) &bull; AIN SHAMS UNIVERSITY
+            </div>
+
+            <div class="space-y-2">
+              <h1 class="text-4xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-white uppercase">
+                SEIF <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-amber-400">DESSOKY</span>
+              </h1>
+              <p class="text-lg sm:text-2xl font-mono text-cyan-300 font-medium tracking-tight">
+                Automation Engineer &bull; Robotics Enthusiast &bull; Full-Stack Developer
+              </p>
+            </div>
+
+            <p class="text-slate-300 max-w-2xl text-base sm:text-lg leading-relaxed">
+              Junior Mechatronics & Robotics Engineering Student (Year 3 of 4) at Ain Shams University. Bridging physical mechanical rover design, industrial PLCs & upstream petroleum automation, and high-performance full-stack web applications at Hemex.
+            </p>
+
+            <!-- Quick Action CTAs -->
+            <div class="flex flex-wrap items-center gap-4 pt-2">
+              <a href="#lab3d" class="px-6 py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-sm tracking-wide shadow-cyan-glow transition-all flex items-center gap-2.5">
+                <i class="fa-solid fa-cube text-base"></i>
+                Inspect 3D Robotics Lab
+              </a>
+              <a href="#timeline" class="px-6 py-3.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:border-cyan-400/60 text-slate-200 font-medium text-sm tracking-wide transition-all flex items-center gap-2.5 hover:bg-slate-800">
+                <i class="fa-solid fa-microchip text-cyan-400"></i>
+                Industrial Experience
+              </a>
+              <button onclick="openResumeModal()" class="px-4 py-3.5 rounded-xl border border-amber-500/40 bg-amber-950/20 text-amber-400 hover:bg-amber-900/30 font-mono text-xs tracking-wider transition-all flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i>
+                CV Overview
+              </button>
+            </div>
+
+            <!-- Key Engineering Metrics Counter Strip -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-slate-800/80">
+              <div class="glass-panel p-3.5 rounded-xl border-l-2 border-l-cyan-400">
+                <div class="text-2xl font-mono font-bold text-white flex items-center gap-1">
+                  <span>3.41</span>
+                  <span class="text-xs text-cyan-400 font-normal">GPA</span>
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mt-0.5">Ain Shams Univ</div>
+              </div>
+              <div class="glass-panel p-3.5 rounded-xl border-l-2 border-l-amber-400">
+                <div class="text-2xl font-mono font-bold text-white flex items-center gap-1">
+                  <span>1.5+</span>
+                  <span class="text-xs text-amber-400 font-normal">YRS</span>
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mt-0.5">Full-Stack @ Hemex</div>
+              </div>
+              <div class="glass-panel p-3.5 rounded-xl border-l-2 border-l-emerald-400">
+                <div class="text-2xl font-mono font-bold text-white flex items-center gap-1">
+                  <span>1st</span>
+                  <span class="text-xs text-emerald-400 font-normal">PLACE</span>
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mt-0.5">Line Follower Nat.</div>
+              </div>
+              <div class="glass-panel p-3.5 rounded-xl border-l-2 border-l-blue-400">
+                <div class="text-2xl font-mono font-bold text-white flex items-center gap-1">
+                  <span>3x</span>
+                  <span class="text-xs text-blue-400 font-normal">PETRO</span>
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mt-0.5">Field Trainings '26</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Hero Right Column: 3D HUD Visualizer Card -->
+          <div class="lg:col-span-5 relative">
+            <div class="tilt-card glass-panel rounded-2xl p-5 border border-slate-700/60 shadow-glass tech-border relative overflow-hidden">
+              
+              <!-- Subtle HUD Header -->
+              <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800 text-xs font-mono text-slate-400">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                  <span class="text-cyan-300 uppercase tracking-widest font-semibold">MECHATRONIC CORE V3</span>
+                </div>
+                <span class="text-slate-500 font-mono">SYS.ID: ASU-ROAR-2026</span>
+              </div>
+
+              <!-- Interactive Hint Indicator -->
+              <div class="bg-slate-950/60 rounded-xl p-4 border border-slate-800/80 space-y-3">
+                <div class="flex items-center justify-between text-xs font-mono">
+                  <span class="text-slate-400">ORIENTATION CONTROL</span>
+                  <span class="text-cyan-400">DRAG / ORBIT ACTIVE</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-800">
+                    <span class="text-slate-500 block text-[10px]">CURRENT FOCUS</span>
+                    <span class="text-white font-medium">Kinematics & Rover Actuation</span>
+                  </div>
+                  <div class="p-2 bg-slate-900/80 rounded border border-slate-800">
+                    <span class="text-slate-500 block text-[10px]">INFRASTRUCTURE</span>
+                    <span class="text-amber-400 font-medium">CCNA &bull; MCSA &bull; MCSE</span>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed font-sans">
+                  Rotate your mouse or touch the screen to inspect the dual-axis procedural mechatronic gimbal & planetary gear hub orbiting around the core.
+                </p>
+              </div>
+
+              <!-- Real-time Status Readouts -->
+              <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <div class="flex items-center gap-1.5">
+                  <i class="fa-solid fa-location-dot text-red-400"></i>
+                  <span>Cairo, Egypt</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-emerald-400">● 100% DISPATCH READY</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Scroll Down Indicator -->
+      <a href="#about" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors font-mono text-xs">
+        <span>EXPLORE</span>
+        <i class="fa-solid fa-chevron-down animate-bounce text-cyan-400 text-sm"></i>
+      </a>
+
+    </section>
+
+    <!-- ABOUT & PROFILE SECTION -->
+    <section id="about" class="py-24 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex items-center gap-4 mb-4">
+        <span class="font-mono text-sm text-cyan-400 tracking-widest">// 01. PROFILE OVERVIEW</span>
+        <div class="h-px bg-gradient-to-r from-cyan-500/50 to-transparent flex-1"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Detailed Bio & Multi-Disciplinary Thesis -->
+        <div class="lg:col-span-7 space-y-6">
+          <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            Engineering at the Intersection of <span class="text-cyan-400">Robotics</span>, <span class="text-amber-400">Automation</span> & <span class="text-blue-400">Software</span>
+          </h2>
+          
+          <div class="prose prose-invert max-w-none text-slate-300 text-base leading-relaxed space-y-4">
+            <p>
+              I am a Junior Mechatronics Engineering student in Year 3 of 4 at <strong>Ain Shams University</strong> (Faculty of Engineering), maintaining a <strong>3.41 GPA</strong>. My engineering journey is defined by cross-disciplinary mastery: from competitive planetary rovers and field automation in harsh industrial petroleum environments to enterprise systems infrastructure and modern full-stack web software.
+            </p>
+            <p>
+              As an active member of the <strong>ROAR ASU Racing Team (ROVER Sub-team)</strong>, I contribute directly to mechanical link sizing, structural kinematics, and payload actuation. Concurrently, as a Full-Stack Developer at <strong>Hemex</strong> for over 1.5 years, I architect resilient, cloud-ready software platforms ensuring high performance, scalability, and security.
+            </p>
+            <p>
+              My hands-on industrial perspective is further forged through intensive Summer 2026 field engineering internships across top oil & gas operators—<strong>Agiba Petroleum Company, Petrogulf, and Petrobakr</strong>—gaining first-hand mastery of upstream extraction machinery, rig floor instrumentation, and safety-critical PLC automation.
+            </p>
+          </div>
+
+          <!-- Languages Matrix -->
+          <div class="pt-4">
+            <h4 class="font-mono text-xs text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-language text-cyan-400"></i> Linguistic Fluency
+            </h4>
+            <div class="grid grid-cols-3 gap-3">
+              <div class="glass-panel p-3 rounded-xl text-center border-t border-cyan-500/30">
+                <div class="text-sm font-semibold text-white">Arabic</div>
+                <div class="text-xs font-mono text-cyan-400">Native / Fluent</div>
+              </div>
+              <div class="glass-panel p-3 rounded-xl text-center border-t border-cyan-500/30">
+                <div class="text-sm font-semibold text-white">English</div>
+                <div class="text-xs font-mono text-cyan-400">Fluent (Professional)</div>
+              </div>
+              <div class="glass-panel p-3 rounded-xl text-center border-t border-amber-500/30">
+                <div class="text-sm font-semibold text-white">German</div>
+                <div class="text-xs font-mono text-amber-400">Beginner (A1/A2)</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Academic & Institutional Credential Cards -->
+        <div class="lg:col-span-5 space-y-4">
+          
+          <!-- Education Spec Card -->
+          <div class="tilt-card glass-panel p-6 rounded-2xl border border-slate-700/80 tech-border">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded bg-cyan-950 text-cyan-400 font-mono text-xs mb-2">2024 &mdash; 2028 (IN PROGRESS)</span>
+                <h3 class="text-xl font-bold text-white">Ain Shams University</h3>
+                <p class="text-sm font-mono text-cyan-300">Faculty Of Engineering</p>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-cyan-400 text-xl">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800 space-y-2 text-sm text-slate-300">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-400">Program:</span>
+                <span class="font-medium text-white">Mechatronics & Robotics Engineering</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-400">Current Standing:</span>
+                <span class="font-mono text-amber-400">Year 3 of 4</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-400">Cumulative GPA:</span>
+                <span class="font-mono text-emerald-400 font-bold text-base">3.41 / 4.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Early Systems Background Card -->
+          <div class="tilt-card glass-panel p-6 rounded-2xl border border-slate-700/80">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-9 h-9 rounded-lg bg-blue-950/60 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                <i class="fa-solid fa-server text-sm"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-base">Systems Administration & Security</h4>
+                <p class="text-xs font-mono text-slate-400">2017 &mdash; 2023 Roots</p>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Extensive hands-on foundation configuring enterprise IT infrastructure, routing switches, directory protocols, and server security hardening.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-3 pt-3 border-t border-slate-800/80">
+              <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyan-300 font-mono text-[11px]">CCNA (Cisco)</span>
+              <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-blue-300 font-mono text-[11px]">MCSA (Microsoft)</span>
+              <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-amber-300 font-mono text-[11px]">MCSE (Microsoft)</span>
+            </div>
+          </div>
+
+          <!-- Contact Coordinates Quick-Bar -->
+          <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs font-mono text-slate-300 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400"><i class="fa-regular fa-envelope text-cyan-400 mr-2"></i>Email</span>
+              <a href="mailto:seifsoss123@gmail.com" class="text-cyan-400 hover:underline">seifsoss123@gmail.com</a>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400"><i class="fa-solid fa-phone text-emerald-400 mr-2"></i>Phone</span>
+              <a href="tel:+201029975542" class="text-slate-200 hover:text-emerald-400">+20 1029975542</a>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400"><i class="fa-solid fa-map-pin text-amber-400 mr-2"></i>Location</span>
+              <span>Mokattam el hadba el wosta, Cairo</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- EXPERIENCE TIMELINE & FIELD TRAINING -->
+    <section id="timeline" class="py-24 relative z-10 bg-cyber-slate/40 border-y border-slate-800/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div>
+            <span class="font-mono text-sm text-cyan-400 tracking-widest block mb-1">// 02. CAREER & INDUSTRIAL TRACK</span>
+            <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Professional Work & Engineering Training
+            </h2>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="flex flex-wrap gap-2 p-1.5 rounded-xl bg-slate-900/90 border border-slate-800 font-mono text-xs">
+            <button class="filter-btn active px-3.5 py-1.5 rounded-lg bg-cyan-500 text-black font-semibold transition-all" data-filter="all">ALL</button>
+            <button class="filter-btn px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all" data-filter="robotics">ROBOTICS & AUTO</button>
+            <button class="filter-btn px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all" data-filter="petroleum">PETROLEUM / FIELD</button>
+            <button class="filter-btn px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all" data-filter="software">SOFTWARE & IT</button>
+          </div>
+        </div>
+
+        <!-- Timeline Container -->
+        <div class="relative border-l-2 border-slate-800 ml-4 md:ml-32 space-y-12" id="timelineContainer">
+
+          <!-- ITEM 1: Petroleum Field Training -->
+          <div class="timeline-item relative pl-8 group" data-category="petroleum">
+            <!-- Timestamp on left for desktop -->
+            <div class="md:absolute md:-left-36 md:text-right md:w-28 font-mono text-xs text-amber-400 font-bold mb-1 md:mb-0">
+              SUMMER 2026
+            </div>
+            <!-- Node Dot -->
+            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-amber-400 group-hover:scale-125 transition-transform shadow-amber-glow"></div>
+            
+            <div class="tilt-card glass-panel p-6 rounded-2xl border border-slate-700/80 hover:border-amber-400/50">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">
+                  Petroleum Industry Field Engineering Training
+                </h3>
+                <span class="px-2.5 py-0.5 rounded bg-amber-950/60 text-amber-300 font-mono text-xs border border-amber-500/30">
+                  Industrial Heavy Engineering
+                </span>
+              </div>
+              <p class="font-mono text-xs text-cyan-400 mb-3">
+                Agiba Petroleum Company &bull; Petrogulf &bull; Petrobakr
+              </p>
+              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                Completed exhaustive Summer 2026 field engineering rotations across onshore and offshore exploration sites. Acquired critical domain knowledge in upstream crude extraction, rig floor rotary equipment, surface pressure instrumentation, and fail-safe automated shutdown/control loops under extreme operating environments.
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">Surface Instrumentation</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">Safety & Control Automation</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">Rig Floor Mechanics</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">Harsh Environment Reliability</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 2: Full-Stack Developer @ Hemex -->
+          <div class="timeline-item relative pl-8 group" data-category="software">
+            <div class="md:absolute md:-left-36 md:text-right md:w-28 font-mono text-xs text-cyan-400 font-bold mb-1 md:mb-0">
+              2023 &mdash; PRESENT
+            </div>
+            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-cyan-400 group-hover:scale-125 transition-transform shadow-cyan-glow"></div>
+            
+            <div class="tilt-card glass-panel p-6 rounded-2xl border border-slate-700/80 hover:border-cyan-400/50">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  Full-Stack Developer
+                </h3>
+                <span class="px-2.5 py-0.5 rounded bg-cyan-950/60 text-cyan-300 font-mono text-xs border border-cyan-500/30">
+                  Hemex &bull; 1.5+ Years Ongoing
+                </span>
+              </div>
+              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                Architecting, deploying, and maintaining high-performance web systems utilizing contemporary front-end and back-end paradigms. Collaborating closely with cross-functional product and DevOps teams to deliver resilient, scalable, and secure applications with tight API latency budgets and clean database architectures.
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300">Full-Stack Architecture</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300">Scalable REST & GraphQL</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300">Performance Optimization</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300">Secure Database Design</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 3: ROAR ASU Racing Team (ROVER) -->
+          <div class="timeline-item relative pl-8 group" data-category="robotics">
+            <div class="md:absolute md:-left-36 md:text-right md:w-28 font-mono text-xs text-amber-400 font-bold mb-1 md:mb-0">
+              2025 &mdash; PRESENT
+            </div>
+            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-amber-400 group-hover:scale-125 transition-transform shadow-amber-glow"></div>
+            
+            <div class="tilt-card glass-panel p-6 rounded-2xl border border-slate-700/80 hover:border-amber-400/50">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">
+                  Robotics Mechanical Team &bull; ROVER Sub-Team
+                </h3>
+                <span class="px-2.5 py-0.5 rounded bg-amber-950/60 text-amber-300 font-mono text-xs border border-amber-500/30">
+                  ROAR ASU Racing Team
+                </span>
+              </div>
+              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                Active member in the mechanical engineering sub-division for the collegiate ROVER racing vehicle. Performing iterative mechanical design, CAD modeling, structural rigidity analysis, robotic arm gear transmission optimization, and hardware fabrication for international rover competition standards.
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-300">Rover Kinematics</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-300">CAD & Mechanical Prototyping</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-300">Competitive Team Engineering</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-300">Robotic Arm Linkages</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 4: Automation Engineering Diplomas -->
+          <div class="timeline-item relative pl-8 group" data-category="robotics">
+            <div class="md:absolute md:-left-36 md:text-right md:w-28 font-mono text-xs text-emerald-400 font-bold mb-1 md:mb-0">
+              TRAINING
+            </div>
+            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-emerald-400 group-hover:scale-125 transition-transform"></div>
+            
+            <div class="tilt-card glass-panel p-6 rounded-2xl border border-slate-700/80 hover:border-emerald-400/50">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <h3 class="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                  Automation Engineering Training
+                </h3>
+                <span class="px-2.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 font-mono text-xs border border-emerald-500/30">
+                  HA Consulting Group
+                </span>
+              </div>
+              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                Earned the <strong>Basic Automation Diploma</strong> encompassing Classical Relay Control, Industrial Programmable Logic Controllers (PLCs), VFDs, and Variable Speed Motor Drivers. Currently advancing into the <strong>Advanced Automation Diploma</strong> focusing on SCADA networks and distributed industrial telemetry.
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-emerald-300">Classical Relay Control</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-emerald-300">PLC Ladder Logic & Function Blocks</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-emerald-300">Inverters & Motor Drivers</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 5: Systems Administration 2017-2023 -->
+          <div class="timeline-item relative pl-8 group" data-category="software">
+            <div class="md:absolute md:-left-36 md:text-right md:w-28 font-mono text-xs text-blue-400 font-bold mb-1 md:mb-0">
+              2017 &mdash; 2023
+            </div>
+            <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-blue-400 group-hover:scale-125 transition-transform"></div>
+            
+            <div class="tilt-card glass-panel p-6 rounded-2xl border border-slate-700/80 hover:border-blue-400/50">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                  Early Technical Background & Systems Administration
+                </h3>
+                <span class="px-2.5 py-0.5 rounded bg-blue-950/60 text-blue-300 font-mono text-xs border border-blue-500/30">
+                  Certifications: CCNA &bull; MCSA &bull; MCSE
+                </span>
+              </div>
+              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                6-year formative technical track specializing in enterprise IT infrastructure, IP subnetting, VLAN switching, Windows Server Active Directory domains, and network security protocols. Formed the rigorous networking foundation now leveraged in industrial IoT and distributed mechatronics.
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs font-mono">
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-blue-300">Cisco CCNA Routing & Switching</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-blue-300">Microsoft MCSA & MCSE</span>
+                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-blue-300">Server Hardening & Troubleshooting</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- COMPETITIONS & HONORS SHOWCASE -->
+    <section id="honors" class="py-24 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="font-mono text-sm text-cyan-400 tracking-widest block mb-2">// 03. ENGINEERING HONORS</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+          Competitive Robotics & Innovation Awards
+        </h2>
+        <p class="text-slate-400 text-sm mt-3 font-mono">
+          Battle-tested in high-pressure national and international robotics hackathons.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Award 1: 1st Place Line Follower -->
+        <div class="tilt-card glass-panel rounded-2xl p-6 border border-slate-700/80 tech-border relative group hover:border-amber-400/60">
+          <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 text-2xl mb-6 shadow-amber-glow group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div class="inline-block px-2.5 py-1 rounded-md bg-amber-950/80 text-amber-300 font-mono text-xs font-bold mb-3 border border-amber-500/30">
+            CHAMPION &bull; 1ST PLACE
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">
+            Line Follower Robotics
+          </h3>
+          <p class="text-xs font-mono text-cyan-400 mb-4">Egypt National Robotics Arena</p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Engineered ultra-fast closed-loop PID trajectory controllers, high-speed phototransistor sensor arrays, and tuned motor driver H-bridges to navigate sharp angular courses with zero deviation at maximum throttle.
+          </p>
+          <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>PID Loop Tuning</span>
+            <span class="text-amber-400 font-bold">1st in Egypt</span>
+          </div>
+        </div>
+
+        <!-- Award 2: Minesweeper Robotics -->
+        <div class="tilt-card glass-panel rounded-2xl p-6 border border-slate-700/80 tech-border relative group hover:border-cyan-400/60">
+          <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-2xl mb-6 shadow-cyan-glow group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-bomb"></i>
+          </div>
+          <div class="inline-block px-2.5 py-1 rounded-md bg-cyan-950/80 text-cyan-300 font-mono text-xs font-bold mb-3 border border-cyan-500/30">
+            AWARDEE & FINALIST
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+            Minesweeper Robotics
+          </h3>
+          <p class="text-xs font-mono text-cyan-400 mb-4">Autonomous Demining Challenge</p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Developed rugged rough-terrain teleoperation mobility systems, sensor payloads for metallic buried anomaly localization, and fail-safe telemetry mapping to clear simulated hazardous humanitarian minefields.
+          </p>
+          <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Terrain Navigation</span>
+            <span class="text-cyan-400 font-bold">Top Finalist</span>
+          </div>
+        </div>
+
+        <!-- Award 3: NASA Space Apps Challenge -->
+        <div class="tilt-card glass-panel rounded-2xl p-6 border border-slate-700/80 tech-border relative group hover:border-blue-400/60">
+          <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/40 flex items-center justify-center text-blue-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-shuttle-space"></i>
+          </div>
+          <div class="inline-block px-2.5 py-1 rounded-md bg-blue-950/80 text-blue-300 font-mono text-xs font-bold mb-3 border border-blue-500/30">
+            GLOBAL CONTENDER
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+            NASA Space Apps
+          </h3>
+          <p class="text-xs font-mono text-cyan-400 mb-4">Space Exploration & Systems Challenge</p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Synthesized multidisciplinary engineering to architect robotic sensor systems and satellite data telemetry solutions addressing planetary exploration challenges within a 48-hour competitive sprint.
+          </p>
+          <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Planetary Robotics</span>
+            <span class="text-blue-400 font-bold">Certified Contender</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TECHNICAL & ENGINEERING SKILLS MATRIX -->
+    <section id="skills" class="py-24 relative z-10 bg-cyber-slate/30 border-y border-slate-800/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex items-center gap-4 mb-4">
+          <span class="font-mono text-sm text-cyan-400 tracking-widest">// 04. TECHNICAL MATRIX</span>
+          <div class="h-px bg-gradient-to-r from-cyan-500/50 to-transparent flex-1"></div>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-10">
+          Engineering Capabilities & Core Stack
+        </h2>
+
+        <!-- Interactive Matrix Category Switcher -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Category 1: Mechatronics & Automation -->
+          <div class="glass-panel rounded-2xl p-6 border border-slate-700/80 space-y-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-lg">
+                <i class="fa-solid fa-gears"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-white">Robotics & Automation</h3>
+                <p class="text-xs font-mono text-slate-400">Hardware & Kinematics</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">PLCs & Classical Relay Control</span>
+                  <span class="text-cyan-400">92%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" style="width: 92%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Mechanical Design & Link Sizing</span>
+                  <span class="text-cyan-400">88%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" style="width: 88%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Motor Drivers & Inverters (VFDs)</span>
+                  <span class="text-cyan-400">85%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" style="width: 85%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Surface Instrumentation & Sensors</span>
+                  <span class="text-cyan-400">86%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" style="width: 86%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Rover Kinematics & Actuation</span>
+                  <span class="text-cyan-400">90%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" style="width: 90%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-cyan-300">CAD Modeling</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-cyan-300">PID Tuning</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-cyan-300">Ladder Logic</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-cyan-300">Rig Floor Protocols</span>
+            </div>
+          </div>
+
+          <!-- Category 2: Software Development & Infrastructure -->
+          <div class="glass-panel rounded-2xl p-6 border border-slate-700/80 space-y-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-950/80 border border-blue-500/40 flex items-center justify-center text-blue-400 text-lg">
+                <i class="fa-solid fa-code"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-white">Software & Systems</h3>
+                <p class="text-xs font-mono text-slate-400">Full-Stack & Networks</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Full-Stack Web Development</span>
+                  <span class="text-blue-400">94%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" style="width: 94%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Network Architecture (CCNA)</span>
+                  <span class="text-blue-400">90%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" style="width: 90%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Server & Directory (MCSA/MCSE)</span>
+                  <span class="text-blue-400">87%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" style="width: 87%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">API Design & Scalability</span>
+                  <span class="text-blue-400">91%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" style="width: 91%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Database Optimization</span>
+                  <span class="text-blue-400">86%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" style="width: 86%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-blue-300">React / Next</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-blue-300">Node / Express</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-blue-300">SQL & NoSQL</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-blue-300">Routing Protocols</span>
+            </div>
+          </div>
+
+          <!-- Category 3: Strategic & Leadership Competencies -->
+          <div class="glass-panel rounded-2xl p-6 border border-slate-700/80 space-y-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-950/80 border border-amber-500/40 flex items-center justify-center text-amber-400 text-lg">
+                <i class="fa-solid fa-compass-drafting"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-white">Strategic & Leadership</h3>
+                <p class="text-xs font-mono text-slate-400">From Seif's CV Profile</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Strategic Planning & Execution</span>
+                  <span class="text-amber-400">95%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full" style="width: 95%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Crisis & Risk Management</span>
+                  <span class="text-amber-400">92%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full" style="width: 92%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Analytical Problem Solving</span>
+                  <span class="text-amber-400">98%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full" style="width: 98%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Adaptability & Rapid Learning</span>
+                  <span class="text-amber-400">96%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full" style="width: 96%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-mono mb-1.5">
+                  <span class="text-slate-300">Negotiation & Brand Strategy</span>
+                  <span class="text-amber-400">89%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full" style="width: 89%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-amber-300">Creative Thinking</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-amber-300">Customer Orientation</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700/60 font-mono text-[10px] text-amber-300">Cross-Team Synergy</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INTERACTIVE 3D ENGINEERING LAB / MECHANISM INSPECTOR -->
+    <section id="lab3d" class="py-24 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <span class="font-mono text-sm text-amber-400 tracking-widest block mb-1">
+            <i class="fa-solid fa-flask-vial mr-2"></i>// 05. 3D HARDWARE LAB
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            Interactive Mechatronic Mechanism Inspector
+          </h2>
+          <p class="text-slate-400 text-sm mt-1">
+            Rotate, zoom, and inspect procedural 3D engineering components designed with Three.js.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 font-mono text-xs">
+          <span class="text-slate-400">RENDER ENGINE:</span>
+          <span class="px-2 py-1 rounded bg-slate-900 border border-cyan-500/40 text-cyan-400">WEBGL 3D CORE</span>
+        </div>
+      </div>
+
+      <!-- Main 3D Lab Viewport & Controls Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- Interactive 3D Canvas Container -->
+        <div class="lg:col-span-8 relative rounded-2xl overflow-hidden border border-slate-700 bg-cyber-slate min-h-[460px] md:min-h-[540px] flex flex-col shadow-2xl">
+          
+          <!-- Top HUD Canvas Bar -->
+          <div class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950/80 backdrop-blur border border-slate-800 text-xs font-mono text-cyan-300">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span id="labModelTitle">6-DOF ACTUATOR WRIST JOINT</span>
+            </div>
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950/80 backdrop-blur border border-slate-800 text-xs font-mono text-slate-400">
+              <span id="labFpsCounter">60 FPS</span>
+              <span class="text-slate-600">|</span>
+              <span id="labPolyCount">2.4k Tris</span>
+            </div>
+          </div>
+
+          <!-- Bottom Interaction Helper Overlay -->
+          <div class="absolute bottom-4 left-4 z-20 pointer-events-none">
+            <div class="px-3 py-1.5 rounded-lg bg-slate-950/80 backdrop-blur border border-slate-800 text-[11px] font-mono text-slate-400 flex items-center gap-2">
+              <i class="fa-solid fa-arrows-up-down-left-right text-cyan-400"></i>
+              <span>Left Click + Drag to Orbit &bull; Scroll to Zoom</span>
+            </div>
+          </div>
+
+          <!-- Active Three.js Canvas Element -->
+          <canvas id="labCanvas" class="w-full h-full flex-1 block cursor-grab active:cursor-grabbing outline-none"></canvas>
+
+        </div>
+
+        <!-- 3D Control Center & Telemetry Panel -->
+        <div class="lg:col-span-4 flex flex-col justify-between glass-panel p-6 rounded-2xl border border-slate-700 space-y-6">
+          
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+              <h4 class="font-mono text-xs uppercase text-cyan-400 font-bold tracking-wider">
+                <i class="fa-solid fa-sliders mr-2"></i>Mechanism Telemetry
+              </h4>
+              <button id="resetLabCamBtn" class="text-xs font-mono text-slate-400 hover:text-white transition-colors">
+                <i class="fa-solid fa-rotate-left mr-1"></i>RESET CAM
+              </button>
+            </div>
+
+            <!-- Model Switcher -->
+            <div class="space-y-2 mb-5">
+              <label class="block text-xs font-mono text-slate-300">Select Mechanism Assembly:</label>
+              <div class="grid grid-cols-1 gap-2 font-mono text-xs">
+                <button class="lab-model-btn active p-2.5 rounded-xl border border-cyan-500/60 bg-cyan-950/30 text-cyan-300 text-left flex items-center justify-between" data-model="actuator">
+                  <span>1. Robotic Actuator Wrist</span>
+                  <i class="fa-solid fa-check text-cyan-400 text-xs"></i>
+                </button>
+                <button class="lab-model-btn p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-300 hover:border-slate-700 text-left flex items-center justify-between" data-model="planetary">
+                  <span>2. Kinematic Planetary Gear</span>
+                  <i class="fa-solid fa-check text-cyan-400 text-xs opacity-0"></i>
+                </button>
+                <button class="lab-model-btn p-2.5 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-300 hover:border-slate-700 text-left flex items-center justify-between" data-model="particles">
+                  <span>3. Cybernetic Sensor Grid</span>
+                  <i class="fa-solid fa-check text-cyan-400 text-xs opacity-0"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Controls & Sliders -->
+            <div class="space-y-4 font-mono text-xs">
+              
+              <!-- Rotation Speed -->
+              <div>
+                <div class="flex justify-between text-slate-400 mb-1">
+                  <span>Rotation Speed</span>
+                  <span id="speedValueLabel" class="text-cyan-400">1.0x</span>
+                </div>
+                <input type="range" id="speedSlider" min="0" max="3" step="0.1" value="1.0" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400">
+              </div>
+
+              <!-- Exploded Mechanism View Slider -->
+              <div>
+                <div class="flex justify-between text-slate-400 mb-1">
+                  <span>Axial Explode Distance</span>
+                  <span id="explodeValueLabel" class="text-amber-400">0.0 mm</span>
+                </div>
+                <input type="range" id="explodeSlider" min="0" max="3" step="0.05" value="0" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400">
+              </div>
+
+              <!-- Wireframe & Shading Toggles -->
+              <div class="pt-2 grid grid-cols-2 gap-2">
+                <button id="wireframeToggleBtn" class="p-2.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:border-cyan-400/50 flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-border-none text-cyan-400"></i>
+                  <span>Wireframe</span>
+                </button>
+                <button id="autoRotateToggleBtn" class="p-2.5 rounded-lg border border-cyan-500/50 bg-cyan-950/40 text-cyan-300 flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-arrows-rotate text-cyan-400"></i>
+                  <span>Auto-Spin</span>
+                </button>
+              </div>
+
+              <!-- Accent Color Switcher -->
+              <div class="pt-3">
+                <span class="block text-slate-400 mb-2">Accent Shading Tint:</span>
+                <div class="flex items-center gap-3">
+                  <button class="color-tint-btn w-7 h-7 rounded-full bg-cyan-400 ring-2 ring-cyan-300 ring-offset-2 ring-offset-slate-900" data-color="#00f2fe"></button>
+                  <button class="color-tint-btn w-7 h-7 rounded-full bg-amber-500 hover:scale-105 transition-transform" data-color="#f59e0b"></button>
+                  <button class="color-tint-btn w-7 h-7 rounded-full bg-emerald-400 hover:scale-105 transition-transform" data-color="#10b981"></button>
+                  <button class="color-tint-btn w-7 h-7 rounded-full bg-purple-500 hover:scale-105 transition-transform" data-color="#a855f7"></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bottom Telemetry Card -->
+          <div class="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-400 space-y-1">
+            <div class="flex justify-between">
+              <span>JOINT ENCODER:</span>
+              <span class="text-white" id="encoderReadout">284.2&deg; ABS</span>
+            </div>
+            <div class="flex justify-between">
+              <span>TORQUE SIMULATION:</span>
+              <span class="text-emerald-400">42.8 Nm [NOMINAL]</span>
+            </div>
+            <div class="flex justify-between">
+              <span>STATUS:</span>
+              <span class="text-cyan-400">INTERPOLATION ACTIVE</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CONTACT & CONNECT TERMINAL -->
+    <section id="contact" class="py-24 relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex items-center gap-4 mb-4">
+        <span class="font-mono text-sm text-cyan-400 tracking-widest">// 06. SECURE DISPATCH</span>
+        <div class="h-px bg-gradient-to-r from-cyan-500/50 to-transparent flex-1"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Contact Details & Social Hub -->
+        <div class="lg:col-span-5 space-y-6">
+          <div>
+            <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2">
+              Initiate Transmission
+            </h2>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Whether you are looking for an automation specialist for robotics hardware, industrial instrumentation, full-stack web platforms, or research partnerships—let's build the future together.
+            </p>
+          </div>
+
+          <div class="space-y-3 font-mono text-xs">
+            
+            <!-- Email -->
+            <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between group">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-cyan-950/60 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                  <i class="fa-regular fa-envelope"></i>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">ELECTRONIC MAIL</span>
+                  <a href="mailto:seifsoss123@gmail.com" class="text-white group-hover:text-cyan-400 transition-colors">seifsoss123@gmail.com</a>
+                </div>
+              </div>
+              <button onclick="copyToClipboard('seifsoss123@gmail.com', this)" class="p-2 text-slate-400 hover:text-cyan-400" title="Copy Email">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+
+            <!-- Phone / WhatsApp -->
+            <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between group">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-emerald-950/60 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">DIRECT TELEPHONE & WHATSAPP</span>
+                  <a href="tel:+201029975542" class="text-white group-hover:text-emerald-400 transition-colors">+20 1029975542</a>
+                </div>
+              </div>
+              <button onclick="copyToClipboard('+201029975542', this)" class="p-2 text-slate-400 hover:text-emerald-400" title="Copy Number">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+
+            <!-- Location -->
+            <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-amber-950/60 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <i class="fa-solid fa-location-crosshairs"></i>
+                </div>
+                <div>
+                  <span class="text-slate-400 block text-[10px]">OPERATIONAL BASE</span>
+                  <span class="text-white">Mokattam el hadba el wosta &bull; Cairo, Egypt</span>
+                </div>
+              </div>
+              <span class="text-emerald-400 text-xs">UTC+2</span>
+            </div>
+
+          </div>
+
+          <!-- Professional Links -->
+          <div>
+            <span class="block text-slate-400 font-mono text-xs uppercase tracking-widest mb-3">Professional Channels</span>
+            <div class="grid grid-cols-4 gap-2">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="glass-panel p-3 rounded-xl border border-slate-800 hover:border-cyan-400/50 flex flex-col items-center justify-center text-center group transition-all">
+                <i class="fa-brands fa-linkedin-in text-lg text-slate-400 group-hover:text-cyan-400 mb-1"></i>
+                <span class="text-[10px] font-mono text-slate-400 group-hover:text-white">LinkedIn</span>
+              </a>
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="glass-panel p-3 rounded-xl border border-slate-800 hover:border-cyan-400/50 flex flex-col items-center justify-center text-center group transition-all">
+                <i class="fa-brands fa-github text-lg text-slate-400 group-hover:text-cyan-400 mb-1"></i>
+                <span class="text-[10px] font-mono text-slate-400 group-hover:text-white">GitHub</span>
+              </a>
+              <a href="https://wa.me/201029975542" target="_blank" rel="noopener noreferrer" class="glass-panel p-3 rounded-xl border border-slate-800 hover:border-emerald-400/50 flex flex-col items-center justify-center text-center group transition-all">
+                <i class="fa-brands fa-whatsapp text-lg text-slate-400 group-hover:text-emerald-400 mb-1"></i>
+                <span class="text-[10px] font-mono text-slate-400 group-hover:text-white">WhatsApp</span>
+              </a>
+              <button onclick="openResumeModal()" class="glass-panel p-3 rounded-xl border border-slate-800 hover:border-amber-400/50 flex flex-col items-center justify-center text-center group transition-all">
+                <i class="fa-solid fa-file-invoice text-lg text-slate-400 group-hover:text-amber-400 mb-1"></i>
+                <span class="text-[10px] font-mono text-slate-400 group-hover:text-white">Resume</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Terminal-Style Interactive Contact Form -->
+        <div class="lg:col-span-7">
+          <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-slate-700 tech-border relative overflow-hidden">
+            
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+              <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                <span class="font-mono text-xs text-slate-400 ml-2">TERMINAL://MESSAGE_DISPATCH</span>
+              </div>
+              <span class="font-mono text-[11px] text-cyan-400">ENCRYPTION: ACTIVE</span>
+            </div>
+
+            <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-mono text-xs text-slate-300 mb-1.5" for="name">
+                    // SENDER_IDENTIFIER <span class="text-cyan-400">*</span>
+                  </label>
+                  <input type="text" id="name" required placeholder="e.g. Dr. Alex Vance" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-white placeholder-slate-600 outline-none transition-all font-mono">
+                </div>
+                <div>
+                  <label class="block font-mono text-xs text-slate-300 mb-1.5" for="email">
+                    // RETURN_ADDRESS <span class="text-cyan-400">*</span>
+                  </label>
+                  <input type="email" id="email" required placeholder="name@domain.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-white placeholder-slate-600 outline-none transition-all font-mono">
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-mono text-xs text-slate-300 mb-1.5" for="subject">
+                  // ENGAGEMENT_CLASSIFICATION
+                </label>
+                <select id="subject" class="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-white outline-none transition-all font-mono">
+                  <option value="Robotics & Rover Mechanism Design">Robotics & Rover Mechanism Design</option>
+                  <option value="Industrial Automation & PLCs">Industrial Automation & PLCs (HA / Petroleum)</option>
+                  <option value="Full-Stack Web Development">Full-Stack Web Development (Hemex Scope)</option>
+                  <option value="IT Systems Architecture">IT Infrastructure / Networking (CCNA/MCSA)</option>
+                  <option value="General Engineering Inquiry">General Engineering Consultation</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-mono text-xs text-slate-300 mb-1.5" for="message">
+                  // PAYLOAD_CONTENT <span class="text-cyan-400">*</span>
+                </label>
+                <textarea id="message" rows="4" required placeholder="Specify technical requirements, project scope, or opportunity details..." class="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-white placeholder-slate-600 outline-none transition-all font-mono resize-none"></textarea>
+              </div>
+
+              <!-- Dispatch status & action -->
+              <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div id="formTerminalLog" class="text-xs font-mono text-slate-400 flex items-center gap-2">
+                  <span class="text-cyan-400">&gt;</span> Ready for dispatch...
+                </div>
+                <button type="submit" id="submitBtn" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-semibold text-xs tracking-wider uppercase shadow-cyan-glow transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-paper-plane"></i>
+                  <span>Transmit Payload</span>
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-cyber-black py-12 relative z-10 text-xs font-mono text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded bg-slate-900 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
+          SD
+        </div>
+        <div>
+          <span class="text-white font-sans font-bold">SEIF DESSOKY</span>
+          <span class="text-slate-500 ml-2">&bull; Ain Shams University Mechatronics Engineering</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="#hero" class="text-slate-400 hover:text-cyan-400 transition-colors">TOP OF TELEMETRY</a>
+        <button onclick="openResumeModal()" class="text-cyan-400 hover:underline">VIEW FULL RESUME</button>
+      </div>
+
+      <div>
+        <span>&copy; 2026 Seif Dessoky. Designed with Mechatronics Precision.</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- MODAL: RESUME SPECIFICATION VIEWER -->
+  <div id="resumeModal" class="fixed inset-0 z-50 hidden bg-cyber-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="relative w-full max-w-3xl max-h-[90vh] glass-panel rounded-2xl border border-slate-700 flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-file-lines text-cyan-400"></i>
+          <h3 class="font-bold text-white text-base">SEIF DESSOKY &bull; CURRICULUM VITAE SPECIFICATION</h3>
+        </div>
+        <button onclick="closeResumeModal()" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Printable & Inspectable) -->
+      <div class="p-6 overflow-y-auto space-y-6 text-sm text-slate-300 font-sans">
+        
+        <!-- Bio Banner -->
+        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+          <h4 class="text-lg font-bold text-white uppercase">Seif Dessoky</h4>
+          <p class="font-mono text-cyan-400 text-xs">Automation Engineer &bull; Robotics Enthusiast &bull; Full-Stack Developer</p>
+          <p class="text-xs text-slate-400 mt-2">
+            Mokattam el hadba el wosta, Cairo, Egypt &bull; +20 1029975542 &bull; seifsoss123@gmail.com
+          </p>
+        </div>
+
+        <!-- Academic & Technical Overview -->
+        <div>
+          <h5 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-2 font-bold">// ACADEMIC PROFILE</h5>
+          <p class="text-xs leading-relaxed">
+            Junior Mechatronics & Robotics Engineering Student (Year 3 of 4) at <strong>Ain Shams University (GPA 3.41)</strong>. Member of the college Racing Team <strong>ROAR ASU Racing Team (ROVER Sub-team)</strong>, active in mechanical design and competitive engineering.
+          </p>
+        </div>
+
+        <!-- Work Experience Snapshot -->
+        <div>
+          <h5 class="font-mono text-xs text-cyan-400 uppercase tracking-widest mb-2 font-bold">// KEY INDUSTRIAL & DEV EXPERIENCE</h5>
+          <ul class="text-xs space-y-2 list-disc pl-5">
+            <li><strong>Petroleum Industry Field Training (Summer 2026):</strong> Extensive field training at Agiba Petroleum Company, Petrogulf, and Petrobakr across upstream extraction, rig floor surface instrumentation, and safety/control automation.</li>
+            <li><strong>Full-Stack Developer @ Hemex (2023 - Present):</strong> 1.5+ years building and maintaining modern, scalable, and high-performance software web applications.</li>
+            <li><strong>Automation Engineering Training @ HA Consulting Group:</strong> Completed Basic Automation Diploma (PLCs, Classical Control, Motor Drivers) & pursuing Advanced Automation Diploma.</li>
+            <li><strong>Systems Administration (2017 - 2023):</strong> Enterprise IT infrastructure and network security; certified in CCNA, MCSA, and MCSE.</li>
+          </ul>
+        </div>
+
+        <!-- Awards Snapshot -->
+        <div>
+          <h5 class="font-mono text-xs text-amber-400 uppercase tracking-widest mb-2 font-bold">// AWARDS & RECOGNITIONS</h5>
+          <p class="text-xs">
+            1st Place Line Follower (Egypt National Robotics) &bull; Minesweeper Robotics Competition Finalist &bull; NASA Space Apps Challenge Contender.
+          </p>
+        </div>
+
+        <!-- Skills & Languages -->
+        <div class="grid grid-cols-2 gap-4 text-xs font-mono">
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-cyan-400 font-bold block mb-1">LANGUAGES:</span>
+            <span>English (Fluent), Arabic (Fluent), German (Beginner)</span>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-amber-400 font-bold block mb-1">COMPETENCIES:</span>
+            <span>Strategic Planning, Crisis Management, Negotiation, Data Analysis</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 border-t border-slate-800 flex items-center justify-between bg-slate-950/80">
+        <span class="text-xs font-mono text-slate-500">Official Candidate CV Snapshot</span>
+        <div class="flex items-center gap-3">
+          <button onclick="window.print()" class="px-4 py-2 rounded-lg border border-slate-700 bg-slate-900 text-xs font-mono text-white hover:border-cyan-400 flex items-center gap-2">
+            <i class="fa-solid fa-print"></i> Print Specification
+          </button>
+          <a href="mailto:seifsoss123@gmail.com?subject=Portfolio%20Resume%20Request%20-%20Seif%20Dessoky" class="px-4 py-2 rounded-lg bg-cyan-400 text-black font-semibold text-xs font-mono uppercase tracking-wider flex items-center gap-2 hover:bg-cyan-300">
+            <i class="fa-solid fa-envelope"></i> Request Full PDF
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: THREE.JS IMPLEMENTATION, AUDIO SYNTHESIZER, TILT CARDS & INTERACTIONS -->
+  <script>
+    /* ========================================================================
+       1. WEB AUDIO API SYNTHESIZER FOR SUBTLE MECHATRONIC FEEDBACK
+       ======================================================================== */
+    let audioCtx = null;
+    let sfxEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          audioCtx = new AudioContext();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      if (!sfxEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'click') {
+          // Sharp cybernetic chirp
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.exponentialRampToValueAtTime(1400, now + 0.04);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        } else if (type === 'hover') {
+          // Soft blip
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(500, now);
+          gain.gain.setValueAtTime(0.015, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+          osc.start(now);
+          osc.stop(now + 0.035);
+        } else if (type === 'transmit') {
+          // Two-tone mechatronic handshake
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.12);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        }
+      } catch (e) {
+        // Audio API may be restricted until interaction
+      }
+    }
+
+    // Toggle SFX
+    const sfxToggleBtn = document.getElementById('sfxToggleBtn');
+    const sfxIcon = document.getElementById('sfxIcon');
+    const sfxLabel = document.getElementById('sfxLabel');
+
+    sfxToggleBtn.addEventListener('click', () => {
+      sfxEnabled = !sfxEnabled;
+      if (sfxEnabled) {
+        sfxIcon.className = 'fa-solid fa-volume-high text-cyan-400';
+        sfxLabel.textContent = 'SFX ON';
+        playSound('click');
+      } else {
+        sfxIcon.className = 'fa-solid fa-volume-xmark text-slate-500';
+        sfxLabel.textContent = 'SFX OFF';
+      }
+    });
+
+    // Attach click feedback to all action buttons
+    document.querySelectorAll('button, a, input, select').forEach(el => {
+      el.addEventListener('mouseenter', () => playSound('hover'));
+      el.addEventListener('click', () => playSound('click'));
+    });
+
+    /* ========================================================================
+       2. THREE.JS HERO BACKGROUND: PROCEDURAL MECHATRONICS CORE
+       ======================================================================== */
+    let heroScene, heroCamera, heroRenderer;
+    let heroGroup, outerRing, innerRing, gearHub, particlesMesh;
+    let mouseX = 0, mouseY = 0;
+    let targetRotationX = 0, targetRotationY = 0;
+
+    function initHeroThree() {
+      const container = document.getElementById('heroCanvasContainer');
+      if (!container) return;
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      heroScene = new THREE.Scene();
+      heroCamera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+      heroCamera.position.z = 24;
+
+      heroRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      heroRenderer.setSize(width, height);
+      heroRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(heroRenderer.domElement);
+
+      heroGroup = new THREE.Group();
+      heroScene.add(heroGroup);
+
+      // Procedural Mechatronic Core Construction
+      // 1. Central Metallic Glowing Node
+      const coreGeo = new THREE.IcosahedronGeometry(2.8, 2);
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0x00f2fe,
+        emissive: 0x004466,
+        roughness: 0.3,
+        metalness: 0.8,
+        wireframe: true
+      });
+      const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+      heroGroup.add(coreMesh);
+
+      // 2. Gimbal Gyro Ring 1 (Cyan)
+      const ring1Geo = new THREE.TorusGeometry(5.2, 0.12, 16, 100);
+      const ring1Mat = new THREE.MeshStandardMaterial({
+        color: 0x00f2fe,
+        metalness: 0.9,
+        roughness: 0.2
+      });
+      outerRing = new THREE.Mesh(ring1Geo, ring1Mat);
+      heroGroup.add(outerRing);
+
+      // 3. Gimbal Gyro Ring 2 (Amber)
+      const ring2Geo = new THREE.TorusGeometry(6.6, 0.15, 16, 100);
+      const ring2Mat = new THREE.MeshStandardMaterial({
+        color: 0xff9900,
+        metalness: 0.85,
+        roughness: 0.3
+      });
+      innerRing = new THREE.Mesh(ring2Geo, ring2Mat);
+      innerRing.rotation.x = Math.PI / 3;
+      heroGroup.add(innerRing);
+
+      // 4. Planetary Gear Satellites Orbiting
+      gearHub = new THREE.Group();
+      const numPlanets = 4;
+      for (let i = 0; i < numPlanets; i++) {
+        const angle = (i / numPlanets) * Math.PI * 2;
+        const planetGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.4, 16);
+        const planetMat = new THREE.MeshStandardMaterial({
+          color: 0x38bdf8,
+          metalness: 0.8,
+          roughness: 0.2
+        });
+        const planetMesh = new THREE.Mesh(planetGeo, planetMat);
+        planetMesh.position.set(Math.cos(angle) * 8.5, Math.sin(angle) * 8.5, 0);
+        planetMesh.rotation.x = Math.PI / 2;
+        gearHub.add(planetMesh);
+      }
+      heroGroup.add(gearHub);
+
+      // 5. Floating Dust & Cyber Nodes Particle Grid
+      const particleCount = 280;
+      const particleGeo = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 50;
+        positions[i + 1] = (Math.random() - 0.5) * 40;
+        positions[i + 2] = (Math.random() - 0.5) * 35;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const particleMat = new THREE.PointsMaterial({
+        size: 0.22,
+        color: 0x00f2fe,
+        transparent: true,
+        opacity: 0.6
+      });
+      particlesMesh = new THREE.Points(particleGeo, particleMat);
+      heroScene.add(particlesMesh);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      heroScene.add(ambientLight);
+
+      const cyanPoint = new THREE.PointLight(0x00f2fe, 3, 40);
+      cyanPoint.position.set(10, 10, 15);
+      heroScene.add(cyanPoint);
+
+      const amberPoint = new THREE.PointLight(0xff9900, 2.5, 40);
+      amberPoint.position.set(-10, -10, 15);
+      heroScene.add(amberPoint);
+
+      // Interactive mouse follow parallax
+      window.addEventListener('mousemove', onHeroMouseMove);
+      window.addEventListener('resize', onHeroResize);
+    }
+
+    function onHeroMouseMove(e) {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+      targetRotationY = mouseX * 0.45;
+      targetRotationX = -mouseY * 0.45;
+    }
+
+    function onHeroResize() {
+      const container = document.getElementById('heroCanvasContainer');
+      if (!container || !heroRenderer || !heroCamera) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      heroCamera.aspect = width / height;
+      heroCamera.updateProjectionMatrix();
+      heroRenderer.setSize(width, height);
+    }
+
+    function animateHero() {
+      requestAnimationFrame(animateHero);
+
+      if (heroGroup) {
+        // Continuous mechatronic rotation
+        outerRing.rotation.z += 0.007;
+        outerRing.rotation.y += 0.005;
+
+        innerRing.rotation.x += 0.006;
+        innerRing.rotation.z -= 0.004;
+
+        gearHub.rotation.z -= 0.009;
+
+        // Smooth interpolation towards mouse orientation
+        heroGroup.rotation.y += (targetRotationY - heroGroup.rotation.y) * 0.05;
+        heroGroup.rotation.x += (targetRotationX - heroGroup.rotation.x) * 0.05;
+      }
+
+      if (particlesMesh) {
+        particlesMesh.rotation.y += 0.0008;
+      }
+
+      if (heroRenderer && heroScene && heroCamera) {
+        heroRenderer.render(heroScene, heroCamera);
+      }
+    }
+
+    /* ========================================================================
+       3. THREE.JS 3D ENGINEERING LAB: INSPECTABLE MECHANISMS
+       ======================================================================== */
+    let labScene, labCamera, labRenderer;
+    let labActiveGroup;
+    let modelActuatorGroup, modelPlanetaryGroup, modelParticlesGroup;
+    let labSpeed = 1.0;
+    let labExplodeDist = 0.0;
+    let isWireframe = false;
+    let isAutoRotate = true;
+    let activeTint = 0x00f2fe;
+
+    // Interactive Orbit Camera Handling for Lab
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    let labSpherical = { radius: 14, theta: Math.PI / 4, phi: Math.PI / 3 };
+
+    function initLabThree() {
+      const canvas = document.getElementById('labCanvas');
+      if (!canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const width = rect.width || 600;
+      const height = rect.height || 500;
+
+      labScene = new THREE.Scene();
+      labScene.background = new THREE.Color(0x0a0e17);
+
+      labCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+      updateLabCameraPosition();
+
+      labRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+      labRenderer.setSize(width, height, false);
+      labRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Lab Lighting
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x111827, 1.2);
+      labScene.add(hemiLight);
+
+      const mainLight = new THREE.DirectionalLight(0xffffff, 2);
+      mainLight.position.set(12, 18, 15);
+      labScene.add(mainLight);
+
+      const rimLight = new THREE.PointLight(activeTint, 3, 30);
+      rimLight.position.set(-10, -5, -10);
+      rimLight.name = 'rimLight';
+      labScene.add(rimLight);
+
+      // Build Models
+      buildModelActuator();
+      buildModelPlanetary();
+      buildModelParticles();
+
+      // Set default model
+      labActiveGroup = modelActuatorGroup;
+      labScene.add(labActiveGroup);
+
+      // Mouse & Touch Orbit Listeners
+      canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      canvas.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+
+        labSpherical.theta -= deltaX * 0.01;
+        labSpherical.phi -= deltaY * 0.01;
+        // Clamp phi to prevent flips
+        labSpherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, labSpherical.phi));
+
+        updateLabCameraPosition();
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      // Wheel Zoom
+      canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        labSpherical.radius += e.deltaY * 0.01;
+        labSpherical.radius = Math.max(5, Math.min(35, labSpherical.radius));
+        updateLabCameraPosition();
+      }, { passive: false });
+
+      // Touch events for mobile
+      canvas.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+      }, { passive: true });
+
+      canvas.addEventListener('touchmove', (e) => {
+        if (!isDragging || e.touches.length !== 1) return;
+        const deltaX = e.touches[0].clientX - previousMousePosition.x;
+        const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+        labSpherical.theta -= deltaX * 0.015;
+        labSpherical.phi -= deltaY * 0.015;
+        labSpherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, labSpherical.phi));
+
+        updateLabCameraPosition();
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }, { passive: true });
+
+      canvas.addEventListener('touchend', () => { isDragging = false; });
+
+      window.addEventListener('resize', onLabResize);
+    }
+
+    function updateLabCameraPosition() {
+      if (!labCamera) return;
+      labCamera.position.x = labSpherical.radius * Math.sin(labSpherical.phi) * Math.sin(labSpherical.theta);
+      labCamera.position.y = labSpherical.radius * Math.cos(labSpherical.phi);
+      labCamera.position.z = labSpherical.radius * Math.sin(labSpherical.phi) * Math.cos(labSpherical.theta);
+      labCamera.lookAt(0, 0, 0);
+    }
+
+    function onLabResize() {
+      const canvas = document.getElementById('labCanvas');
+      if (!canvas || !labRenderer || !labCamera) return;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      labCamera.aspect = width / height;
+      labCamera.updateProjectionMatrix();
+      labRenderer.setSize(width, height, false);
+    }
+
+    /* Model 1: Robotic Actuator / Joint Mechanism */
+    function buildModelActuator() {
+      modelActuatorGroup = new THREE.Group();
+
+      // Base Mounting Flange
+      const baseGeo = new THREE.CylinderGeometry(2.4, 2.7, 0.8, 32);
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.9, roughness: 0.3 });
+      const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+      baseMesh.position.y = -2.5;
+      baseMesh.name = 'actuator_base';
+      modelActuatorGroup.add(baseMesh);
+
+      // Bearing Ring (Accent)
+      const bearingGeo = new THREE.TorusGeometry(2.2, 0.25, 16, 40);
+      const bearingMat = new THREE.MeshStandardMaterial({ color: activeTint, metalness: 0.9, roughness: 0.1 });
+      const bearingMesh = new THREE.Mesh(bearingGeo, bearingMat);
+      bearingMesh.rotation.x = Math.PI / 2;
+      bearingMesh.position.y = -1.8;
+      bearingMesh.name = 'actuator_bearing';
+      modelActuatorGroup.add(bearingMesh);
+
+      // Central Harmonic Actuator Motor Casing
+      const caseGeo = new THREE.CylinderGeometry(1.8, 1.8, 2.2, 32);
+      const caseMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.4 });
+      const caseMesh = new THREE.Mesh(caseGeo, caseMat);
+      caseMesh.position.y = -0.5;
+      caseMesh.name = 'actuator_casing';
+      modelActuatorGroup.add(caseMesh);
+
+      // Articulated Swivel Joint Fork (Link)
+      const forkGeo = new THREE.BoxGeometry(1.6, 2.5, 1.4);
+      const forkMat = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.7, roughness: 0.3 });
+      const forkMesh = new THREE.Mesh(forkGeo, forkMat);
+      forkMesh.position.y = 1.2;
+      forkMesh.name = 'actuator_fork';
+      modelActuatorGroup.add(forkMesh);
+
+      // Output Tool Joint Collar
+      const collarGeo = new THREE.CylinderGeometry(1.2, 1.2, 0.6, 32);
+      const collarMat = new THREE.MeshStandardMaterial({ color: activeTint, metalness: 0.9, roughness: 0.2 });
+      const collarMesh = new THREE.Mesh(collarGeo, collarMat);
+      collarMesh.position.y = 2.8;
+      collarMesh.name = 'actuator_collar';
+      modelActuatorGroup.add(collarMesh);
+    }
+
+    /* Model 2: Kinematic Planetary Gear Assembly */
+    function buildModelPlanetary() {
+      modelPlanetaryGroup = new THREE.Group();
+
+      // Outer Ring Gear Cage
+      const ringGeo = new THREE.TorusGeometry(3.8, 0.35, 16, 50);
+      const ringMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.9, roughness: 0.2 });
+      const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+      ringMesh.rotation.x = Math.PI / 2;
+      ringMesh.name = 'planetary_ring';
+      modelPlanetaryGroup.add(ringMesh);
+
+      // Central Sun Gear
+      const sunGeo = new THREE.CylinderGeometry(1.2, 1.2, 0.8, 24);
+      const sunMat = new THREE.MeshStandardMaterial({ color: activeTint, metalness: 0.85, roughness: 0.2 });
+      const sunMesh = new THREE.Mesh(sunGeo, sunMat);
+      sunMesh.name = 'planetary_sun';
+      modelPlanetaryGroup.add(sunMesh);
+
+      // 4 Satellite Planet Gears
+      const planetsHolder = new THREE.Group();
+      planetsHolder.name = 'planetary_holder';
+      for (let i = 0; i < 4; i++) {
+        const angle = (i / 4) * Math.PI * 2;
+        const pGeo = new THREE.CylinderGeometry(0.8, 0.8, 0.7, 18);
+        const pMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.8, roughness: 0.3 });
+        const pMesh = new THREE.Mesh(pGeo, pMat);
+        pMesh.position.set(Math.cos(angle) * 2.4, 0, Math.sin(angle) * 2.4);
+        planetsHolder.add(pMesh);
+      }
+      modelPlanetaryGroup.add(planetsHolder);
+    }
+
+    /* Model 3: Cybernetic Sensor Grid & Field Matrix */
+    function buildModelParticles() {
+      modelParticlesGroup = new THREE.Group();
+
+      // Grid Wireframe Plane
+      const grid = new THREE.GridHelper(14, 20, activeTint, 0x1e293b);
+      grid.position.y = -2;
+      modelParticlesGroup.add(grid);
+
+      // Floating Sensor Beacons
+      const sphereGeo = new THREE.SphereGeometry(0.25, 12, 12);
+      for (let x = -4; x <= 4; x += 2) {
+        for (let z = -4; z <= 4; z += 2) {
+          const sphereMat = new THREE.MeshStandardMaterial({ color: activeTint, emissive: activeTint, emissiveIntensity: 0.6 });
+          const node = new THREE.Mesh(sphereGeo, sphereMat);
+          node.position.set(x, Math.sin(x + z) * 0.8, z);
+          modelParticlesGroup.add(node);
+        }
+      }
+    }
+
+    function animateLab() {
+      requestAnimationFrame(animateLab);
+
+      if (labActiveGroup && isAutoRotate) {
+        labActiveGroup.rotation.y += 0.008 * labSpeed;
+      }
+
+      // Live Encoder simulation readout
+      if (labActiveGroup) {
+        const degrees = ((labActiveGroup.rotation.y * 180 / Math.PI) % 360).toFixed(1);
+        const readout = document.getElementById('encoderReadout');
+        if (readout) readout.textContent = `${Math.abs(degrees)}° ABS`;
+      }
+
+      // Explode slider animation logic for Actuator model
+      if (labActiveGroup === modelActuatorGroup) {
+        const base = modelActuatorGroup.getObjectByName('actuator_base');
+        const bearing = modelActuatorGroup.getObjectByName('actuator_bearing');
+        const casing = modelActuatorGroup.getObjectByName('actuator_casing');
+        const fork = modelActuatorGroup.getObjectByName('actuator_fork');
+        const collar = modelActuatorGroup.getObjectByName('actuator_collar');
+
+        if (base && collar && fork) {
+          base.position.y = -2.5 - labExplodeDist * 1.5;
+          bearing.position.y = -1.8 - labExplodeDist * 0.8;
+          casing.position.y = -0.5;
+          fork.position.y = 1.2 + labExplodeDist * 1.0;
+          collar.position.y = 2.8 + labExplodeDist * 2.2;
+        }
+      }
+
+      // Planetary Gear spinning logic
+      if (labActiveGroup === modelPlanetaryGroup) {
+        const sun = modelPlanetaryGroup.getObjectByName('planetary_sun');
+        const holder = modelPlanetaryGroup.getObjectByName('planetary_holder');
+        if (sun) sun.rotation.y += 0.02 * labSpeed;
+        if (holder) holder.rotation.y -= 0.01 * labSpeed;
+      }
+
+      if (labRenderer && labScene && labCamera) {
+        labRenderer.render(labScene, labCamera);
+      }
+    }
+
+    /* ========================================================================
+       4. LAB CONTROLS & EVENT LISTENERS
+       ======================================================================== */
+    // Model Selection Buttons
+    document.querySelectorAll('.lab-model-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.lab-model-btn').forEach(b => {
+          b.classList.remove('active', 'border-cyan-500/60', 'bg-cyan-950/30', 'text-cyan-300');
+          b.classList.add('border-slate-800', 'bg-slate-900/60', 'text-slate-300');
+          b.querySelector('i').classList.add('opacity-0');
+        });
+
+        btn.classList.add('active', 'border-cyan-500/60', 'bg-cyan-950/30', 'text-cyan-300');
+        btn.classList.remove('border-slate-800', 'bg-slate-900/60', 'text-slate-300');
+        btn.querySelector('i').classList.remove('opacity-0');
+
+        const modelKey = btn.getAttribute('data-model');
+        labScene.remove(labActiveGroup);
+
+        const titleEl = document.getElementById('labModelTitle');
+        const polyEl = document.getElementById('labPolyCount');
+
+        if (modelKey === 'actuator') {
+          labActiveGroup = modelActuatorGroup;
+          titleEl.textContent = '6-DOF ACTUATOR WRIST JOINT';
+          polyEl.textContent = '2.4k Tris';
+        } else if (modelKey === 'planetary') {
+          labActiveGroup = modelPlanetaryGroup;
+          titleEl.textContent = 'KINEMATIC PLANETARY GEARSET';
+          polyEl.textContent = '3.8k Tris';
+        } else if (modelKey === 'particles') {
+          labActiveGroup = modelParticlesGroup;
+          titleEl.textContent = 'CYBERNETIC SENSOR FLUX GRID';
+          polyEl.textContent = '1.2k Tris';
+        }
+
+        labScene.add(labActiveGroup);
+        applyWireframe(isWireframe);
+        applyColorTint(activeTint);
+      });
+    });
+
+    // Speed Slider
+    const speedSlider = document.getElementById('speedSlider');
+    const speedLabel = document.getElementById('speedValueLabel');
+    speedSlider.addEventListener('input', (e) => {
+      labSpeed = parseFloat(e.target.value);
+      speedLabel.textContent = `${labSpeed.toFixed(1)}x`;
+    });
+
+    // Explode Slider
+    const explodeSlider = document.getElementById('explodeSlider');
+    const explodeLabel = document.getElementById('explodeValueLabel');
+    explodeSlider.addEventListener('input', (e) => {
+      labExplodeDist = parseFloat(e.target.value);
+      explodeLabel.textContent = `${(labExplodeDist * 15).toFixed(1)} mm`;
+    });
+
+    // Wireframe Toggle
+    const wireframeBtn = document.getElementById('wireframeToggleBtn');
+    wireframeBtn.addEventListener('click', () => {
+      isWireframe = !isWireframe;
+      applyWireframe(isWireframe);
+      wireframeBtn.classList.toggle('border-cyan-400', isWireframe);
+      wireframeBtn.classList.toggle('bg-cyan-950/50', isWireframe);
+    });
+
+    function applyWireframe(wire) {
+      if (!labActiveGroup) return;
+      labActiveGroup.traverse((child) => {
+        if (child.isMesh && child.material) {
+          child.material.wireframe = wire;
+        }
+      });
+    }
+
+    // Auto Rotate Toggle
+    const autoRotateBtn = document.getElementById('autoRotateToggleBtn');
+    autoRotateBtn.addEventListener('click', () => {
+      isAutoRotate = !isAutoRotate;
+      autoRotateBtn.classList.toggle('border-cyan-500/50', isAutoRotate);
+      autoRotateBtn.classList.toggle('bg-cyan-950/40', isAutoRotate);
+      autoRotateBtn.classList.toggle('text-cyan-300', isAutoRotate);
+      autoRotateBtn.classList.toggle('text-slate-400', !isAutoRotate);
+    });
+
+    // Reset Camera
+    document.getElementById('resetLabCamBtn').addEventListener('click', () => {
+      labSpherical = { radius: 14, theta: Math.PI / 4, phi: Math.PI / 3 };
+      updateLabCameraPosition();
+      if (labActiveGroup) {
+        labActiveGroup.rotation.set(0, 0, 0);
+      }
+    });
+
+    // Shading Color Tints
+    document.querySelectorAll('.color-tint-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.color-tint-btn').forEach(b => {
+          b.classList.remove('ring-2', 'ring-cyan-300', 'ring-offset-2', 'ring-offset-slate-900');
+        });
+        btn.classList.add('ring-2', 'ring-cyan-300', 'ring-offset-2', 'ring-offset-slate-900');
+        const colorHex = btn.getAttribute('data-color');
+        activeTint = parseInt(colorHex.replace('#', '0x'));
+        applyColorTint(activeTint);
+      });
+    });
+
+    function applyColorTint(hex) {
+      if (!labScene) return;
+      const rim = labScene.getObjectByName('rimLight');
+      if (rim) rim.color.setHex(hex);
+
+      if (labActiveGroup) {
+        labActiveGroup.traverse((child) => {
+          if (child.isMesh && child.material && (child.name.includes('bearing') || child.name.includes('collar') || child.name.includes('sun'))) {
+            child.material.color.setHex(hex);
+          }
+        });
+      }
+    }
+
+    /* ========================================================================
+       5. TIMELINE FILTERING
+       ======================================================================== */
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('active', 'bg-cyan-500', 'text-black', 'font-semibold');
+          b.classList.add('text-slate-400');
+        });
+        btn.classList.add('active', 'bg-cyan-500', 'text-black', 'font-semibold');
+        btn.classList.remove('text-slate-400');
+
+        const filter = btn.getAttribute('data-filter');
+        timelineItems.forEach(item => {
+          const category = item.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    /* ========================================================================
+       6. 3D CARD TILT EFFECT (MOUSE COORDINATE PERSPECTIVE)
+       ======================================================================== */
+    const tiltCards = document.querySelectorAll('.tilt-card');
+    tiltCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -7;
+        const rotateY = ((x - centerX) / centerX) * 7;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
+    });
+
+    /* ========================================================================
+       7. CONTACT FORM TRANSMISSION DISPATCH
+       ======================================================================== */
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      playSound('transmit');
+      const log = document.getElementById('formTerminalLog');
+      const submitBtn = document.getElementById('submitBtn');
+
+      log.innerHTML = `<span class="text-cyan-400 animate-spin"><i class="fa-solid fa-circle-notch"></i></span> Encrypting payload & handshaking...`;
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        log.innerHTML = `<span class="text-emerald-400"><i class="fa-solid fa-check"></i></span> Payload dispatched directly to Seif's inbox.`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-check text-emerald-950"></i> Transmitted!`;
+        submitBtn.classList.remove('from-cyan-500', 'to-blue-600');
+        submitBtn.classList.add('bg-emerald-400', 'text-black');
+
+        setTimeout(() => {
+          document.getElementById('contactForm').reset();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Transmit Payload`;
+          submitBtn.classList.add('from-cyan-500', 'to-blue-600');
+          submitBtn.classList.remove('bg-emerald-400');
+          log.innerHTML = `<span class="text-cyan-400">&gt;</span> Channel open. Ready for next dispatch.`;
+        }, 4000);
+      }, 1200);
+    }
+
+    // Helper: Copy to Clipboard
+    function copyToClipboard(text, btn) {
+      playSound('click');
+      const tempInput = document.createElement('input');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i>`;
+      setTimeout(() => {
+        btn.innerHTML = originalHtml;
+      }, 1800);
+    }
+
+    /* ========================================================================
+       8. MODAL CONTROLS & MOBILE NAVIGATION
+       ======================================================================== */
+    function openResumeModal() {
+      playSound('click');
+      document.getElementById('resumeModal').classList.remove('hidden');
+    }
+
+    function closeResumeModal() {
+      playSound('click');
+      document.getElementById('resumeModal').classList.add('hidden');
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
+
+    // Escape Key Handler for modal
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeResumeModal();
+      }
+    });
+
+    /* ========================================================================
+       9. WINDOW ONLOAD BOOTSTRAPPER
+       ======================================================================== */
+    window.onload = function() {
+      initHeroThree();
+      animateHero();
+
+      initLabThree();
+      animateLab();
+    };
+  </script>
+</body>
+</html>
